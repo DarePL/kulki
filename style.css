@@ -65,8 +65,10 @@ nav {
   background-color: #347E7B;
   height: 600px;
   width: 350px;
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 footer {
@@ -99,4 +101,8 @@ h4 {
 
 .button:active {
   background-color: #0B5451;
+}
+
+p {
+  background-color: rgb(71, 255, 231);
 }

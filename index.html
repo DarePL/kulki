@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kulki</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -21,7 +22,15 @@
     </section>
     <nav>
       <input type="button" value="Dodaj losową kulkę" class="button" onclick="addRandom()">
+      <input type="button" value="Wyczyść canvas" class="button" onclick="clearTable()">
+      <br>
+      <table id="table-kulki">
+
+      </table>
+      <!-- <span id="x"></span><br>
+      <span id="y"></span><br> -->
     </nav>
+
   </main>
   <footer>
     <h4>Wykonał: Damian Szymczyk</h4>
