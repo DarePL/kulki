@@ -37,7 +37,6 @@ header {
   text-align: center;
   padding: 20px 0px;
   width: 1000px;
-
   background-image: linear-gradient(#003937, #347E7B);
 }
 
@@ -46,7 +45,6 @@ canvas {
 }
 
 main {
-
   width: 1000px;
 }
 
@@ -65,8 +63,6 @@ nav {
   background-color: #347E7B;
   height: 600px;
   width: 350px;
-  /* display: flex; */
-  /* justify-content: center; */
   overflow-y: auto;
   overflow-x: hidden;
 }

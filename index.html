@@ -21,9 +21,11 @@
       </canvas>
     </section>
     <nav>
-      <input type="button" value="Dodaj losową kulkę" class="button" onclick="addRandom()">
+      <input type="button" value="Dodaj losową kulkę" class="button" onclick="createBall()">
       <input type="button" value="Wyczyść canvas" class="button" onclick="clearTable()">
-      <br>
+      <input type="number" id="numberOfBalls" value="1" min="1" max="500">
+      <input type="button" value="Utwórz wiele kulek" class="button" onclick="createManyBalls()">
+      <br><br>
       <table id="table-kulki">
 
       </table>

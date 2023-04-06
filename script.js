@@ -3,108 +3,98 @@ const ctx = canvas.getContext("2d");
 const CANVAS_WIDTH = canvas.width = 600;
 const CANVAS_HEIGHT = canvas.height = 600;
 
-let radnomRed = [];
-let radnomGreen = [];
-let radnomBlue = [];
-let elementRadius = [];
-
-let x = [];
-let y = [];
-let dx = [];
-let dy = [];
-let tablica = [];
+let balls = [];
 let speed = 1;
 let i = -1;
-
-function addRandom() {
-  i++;
-  radnomRed[i] = parseInt(Math.random() * 255 + 0);
-  radnomGreen[i] = parseInt(Math.random() * 255 + 0);
-  radnomBlue[i] = parseInt(Math.random() * 255 + 0);
-  elementRadius.push(parseInt(Math.random() * 40 + 20));
-  x.push(parseInt(CANVAS_WIDTH / 2));
-  y.push(parseInt(CANVAS_HEIGHT / 2));
-  dx.push(parseInt((Math.random() * 4 + 1)));
-  dy.push(parseInt((Math.random() * 4 + 1)));
-  addTable(i);
-}
-
-function create(i) {
-  ctx.strokeStyle = "grey";
-  ctx.fillStyle = "red";
-  ctx.beginPath();
-  ctx.arc(x[i], y[i], elementRadius[i], 0, Math.PI * 2);
-  ctx.fill();
-  ctx.stroke();
-  console.log(x);
-}
-
 animate();
 
+//tworzy nową kulkę
+function createBall() {
+  //losuje kolor
+  let randomColor = {
+    red: parseInt(Math.random() * 255 + 0),
+    green: parseInt(Math.random() * 255 + 0),
+    blue: parseInt(Math.random() * 255 + 0),
+    rgb() {
+      return "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
+    }
+  }
+  //ustawia parametry i dodaje nową kulkę do tablicy 'balls' 
+  let ball = {
+    x: parseInt(CANVAS_WIDTH / 2),
+    y: parseInt(CANVAS_HEIGHT / 2),
+    dx: (Math.random() * 4 + 1),
+    dy: (Math.random() * 4 + 1),
+    radius: parseInt(Math.random() * 40 + 5),
+    speed: 1,
+    randomColor: randomColor.rgb(),
+  }
+  balls.push(ball);
+  i++;
+}
+//rysuje kulki
+function drawBalls(i) {
+  ctx.strokeStyle = "grey";
+  ctx.fillStyle = balls[i].randomColor;
+  ctx.beginPath();
+  ctx.arc(balls[i].x, balls[i].y, balls[i].radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+}
+
+//tworzy wiele kulek
+function createManyBalls() {
+  let i = parseInt(document.getElementById("numberOfBalls").value);
+  if (i > 500) {
+    alert("Trochę za dużo kulek.\nProgram może zacząć zamulać komputer ;-)\nmaksymalna liczba to 500");
+  }
+  else if ((balls.length > 500) || (i + balls.length > 500)) {
+    alert("Może już wystarczy kulek?\nProgram może zacząć zamulać komputer ;-)\nmaksymalna liczba to 500")
+  }
+  else {
+    for (let j = 0; j < i; j++) {
+      createBall();
+    }
+  }
+}
+
+//animacja canvas
 function animate() {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-  for (let k = 0; k < x.length; k++) {
-    ctx.strokeStyle = "grey";
-    ctx.fillStyle = "rgb(" + radnomRed[0] + ", " + radnomGreen[0] + ", " + radnomBlue[0] + ")";
-    ctx.beginPath();
-    ctx.arc(x[k], y[k], elementRadius[k], 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+  for (let k = 0; k < balls.length; k++) {
+    drawBalls(k);
 
-    x[k] = x[k] + dx[k] * speed;
-    y[k] = y[k] + dy[k] * speed;
+    balls[k].x = balls[k].x + balls[k].dx * speed;
+    balls[k].y = balls[k].y + balls[k].dy * speed;
 
-    for (let t = 0; t < elementRadius.length; t++) {
+    $("#table-kulki").html("<td>Ilość kulek na ekranie: " + balls.length + "</td>");
 
-      $("#tr" + t + "").html("<td>" + t + "</td><td>x: " + parseInt(x[t]) +
-        "</td><td>y: " + parseInt(y[t]) +
-        "</td><td>radius: " + parseInt(elementRadius[t]) +
-        "</td><td>dx: " + parseInt(dx[t]) +
-        "</td><td>dy: " + parseInt(dy[t]) + "</td>");
-    }
-
-
-    if ((x[k] >= CANVAS_WIDTH - elementRadius[k]) || (x[k] - elementRadius[k] <= 0)) {
-      dx[k] = -dx[k];
-      if (x[k] < 0) {
-        x[k] = 0;
+    if ((balls[k].x >= CANVAS_WIDTH - balls[k].radius) || (balls[k].x - balls[k].radius <= 0)) {
+      balls[k].dx = -balls[k].dx;
+      if (balls[k].x < 0) {
+        balls[k].x = 0;
       }
-      if (x[k] > CANVAS_WIDTH - elementRadius[k]) {
-        x[k] = CANVAS_WIDTH - elementRadius[k];
+      if (balls[k].x > CANVAS_WIDTH - balls[k].radius) {
+        balls[k].x = CANVAS_WIDTH - balls[k].radius;
       }
     }
 
-    if ((y[k] >= CANVAS_HEIGHT - elementRadius[k]) || (y[k] - elementRadius[k] <= 0)) {
-      dy[k] = -dy[k];
-      if (y[k] < 0) {
-        y[k] = 0;
+    if ((balls[k].y >= CANVAS_HEIGHT - balls[k].radius) || (balls[k].y - balls[k].radius <= 0)) {
+      balls[k].dy = -balls[k].dy;
+      if (balls[k].y < 0) {
+        balls[k].y = 0;
       }
-      if (y[k] > CANVAS_HEIGHT - elementRadius[k]) {
-        y[k] = CANVAS_HEIGHT - elementRadius[k];
+      if (balls[k].y > CANVAS_HEIGHT - balls[k].radius) {
+        balls[k].y = CANVAS_HEIGHT - balls[k].radius;
       }
     }
   }
   requestAnimationFrame(animate);
 }
 
-
-function addTable(i) {
-  $("#table-kulki").append("<tr id=\"tr" + i + "\">");
-
-}
-
+//czyszczenie canvasa z kulek
 function clearTable() {
   i = -1;
-  radnomRed = [];
-  radnomGreen = [];
-  radnomBlue = [];
-  elementRadius = [];
-
-  x = [];
-  y = [];
-  dx = [];
-  dy = [];
-  tablica = [];
-  $("#table-kulki").html("");
+  balls = [];
 }
